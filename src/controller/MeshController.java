@@ -5,6 +5,7 @@ import model.SemaphoreRoad;
 import model.SimulationParameters;
 import view.SimulationFrame;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -20,6 +21,9 @@ public class MeshController {
     private int columns;
     private SimulationParameters simulationParameters;
 
+    private JLabel runningCarsCountLabel;
+    private JLabel carsOnQueueLabel;
+
     public static synchronized MeshController getInstance() {
         if (instance == null) {
             instance = new MeshController();
@@ -28,8 +32,27 @@ public class MeshController {
         return instance;
     }
 
+    public Simulation getSimulation() {
+        return this.simulation;
+    }
+
     public void setSimulationFrame(SimulationFrame simulationFrame) {
         this.simulationFrame = simulationFrame;
+    }
+
+    public JLabel getRunningCarsCountLabel() {
+        return runningCarsCountLabel;
+    }
+
+    public JLabel getCarsOnQueueLabel() {
+        return carsOnQueueLabel;
+    }
+
+    public void setRunningCarsCountLabel(JLabel runningCarsCountLabel) {
+        this.runningCarsCountLabel = runningCarsCountLabel;
+    }
+    public void setCarsOnQueueLabel(JLabel carsOnQueueLabel) {
+        this.carsOnQueueLabel = carsOnQueueLabel;
     }
 
     private MeshController() {}
@@ -69,11 +92,22 @@ public class MeshController {
         return cell.getDirection() > 0;
     }
 
+    public void endSimulation() {
+        this.simulation.setEndSimulation(true);
+    }
+
     public void runSimulation() {
         this.simulation = new Simulation(this);
         this.simulation.start();
     }
 
+    public void pauseSimulation() {
+        this.simulation.setPauseSimulation(true);
+    }
+
+    public void unpauseSimulation() {
+        this.simulation.setPauseSimulation(false);
+    }
 
     public void defineEntriesAndExits(Road cell) {
         boolean isEntryCell = (

@@ -44,13 +44,62 @@ public class SimulationFrame extends JFrame {
 
     private void initComponents() {
         this.roadMeshPanel = new RoadMeshPanel(this.meshController.getSimulationParameters().getMeshFile());
-        JButton buttonStopSimulation = new JButton();
-        buttonStopSimulation.setText("Stop simulation");
-        buttonStopSimulation.addActionListener((ActionEvent e) -> {
+
+        JLabel runningCarsCountLabel = new JLabel();
+        runningCarsCountLabel.setText("Running cars: 0");
+
+        JLabel carsOnQueueLabel = new JLabel();
+        carsOnQueueLabel.setText("cars on queue: 0");
+
+
+        this.meshController.setRunningCarsCountLabel(runningCarsCountLabel);
+        this.meshController.setCarsOnQueueLabel(carsOnQueueLabel);
+
+        JLabel isPausedLabel = new JLabel();
+        isPausedLabel.setText("PLAYING...");
+
+        JButton unpauseSimulationButton = new JButton();
+
+        unpauseSimulationButton.setText("Unpause simulation");
+        unpauseSimulationButton.addActionListener((ActionEvent e) -> {
+            if(!this.meshController.getSimulation().hasEnded()) {
+                this.meshController.unpauseSimulation();
+                isPausedLabel.setText("PLAYING...");
+            }
+        });
+
+
+        JButton pauseSimulationButton = new JButton();
+        pauseSimulationButton.setText("Pause simulation");
+        pauseSimulationButton.addActionListener((ActionEvent e) -> {
+            if(!this.meshController.getSimulation().hasEnded()) {
+                this.meshController.pauseSimulation();
+                isPausedLabel.setText("PAUSED");
+            }
+        });
+
+        JButton endSimulationButton = new JButton();
+        endSimulationButton.setText("End simulation");
+        endSimulationButton.addActionListener((ActionEvent e) -> {
+            isPausedLabel.setText("ENDED");
+            this.meshController.endSimulation();
+        });
+
+        JButton interruptSimulationButton = new JButton();
+        interruptSimulationButton.setText("Interrupt simulation");
+        interruptSimulationButton.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
 
-        this.roadMeshPanel.add(buttonStopSimulation);
+        this.roadMeshPanel.add(carsOnQueueLabel);
+        this.roadMeshPanel.add(runningCarsCountLabel);
+        this.roadMeshPanel.add(isPausedLabel);
+
+        this.roadMeshPanel.add(endSimulationButton);
+        this.roadMeshPanel.add(pauseSimulationButton);
+        this.roadMeshPanel.add(unpauseSimulationButton);
+        this.roadMeshPanel.add(interruptSimulationButton);
+
         this.add(this.roadMeshPanel);
     }
 

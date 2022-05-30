@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.io.File;
 
-
 public class RoadMeshPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;

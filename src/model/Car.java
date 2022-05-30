@@ -1,6 +1,7 @@
 package model;
 
 import controller.MeshController;
+import controller.Simulation;
 
 import java.util.*;
 
@@ -14,6 +15,8 @@ public class Car extends Thread {
     private int speed;
     private int amountOfChoices;
 
+    private Simulation simulation;
+
     public Car() {
         this.route = new ArrayList<>();
         this.meshController = MeshController.getInstance();
@@ -24,6 +27,10 @@ public class Car extends Thread {
         this.random = new Random();
         this.speed = random.nextInt(100) + 500;
 
+    }
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
     }
 
     private void handleCrossroads() {
@@ -119,6 +126,7 @@ public class Car extends Thread {
         }
         this.getCurrentRoad().removeCar();
         this.getCurrentRoad().release();
+        this.simulation.removeRunningCar(this);
         this.meshController.updateRoadMesh();
     }
 

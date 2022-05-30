@@ -5,17 +5,19 @@ import java.io.File;
 public class SimulationParameters {
   private static final String MESH_FILES_PATH = "./mesh/";
 
-  int carCount;
-  int carSpawnInterval;
-  File meshFile;
+  private int carCount;
+  private int carSpawnInterval;
+  private int maxCarsOnMesh;
+  private File meshFile;
 
   private File readMeshFile(String meshFileName) {
     return new File(MESH_FILES_PATH + meshFileName);
   }
 
-  public SimulationParameters(int carCount, int carSpawnInterval, String meshFile) {
+  public SimulationParameters(int carCount, int carSpawnInterval, int maxCarsOnMesh, String meshFile) {
     this.carCount = carCount;
     this.carSpawnInterval = carSpawnInterval;
+    this.maxCarsOnMesh = maxCarsOnMesh;
     this.meshFile = this.readMeshFile(meshFile);
   }
 
@@ -31,4 +33,7 @@ public class SimulationParameters {
     return meshFile;
   }
 
+  public int getMaxCarsOnMesh() {
+    return maxCarsOnMesh;
+  }
 }

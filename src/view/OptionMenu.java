@@ -16,6 +16,7 @@ public class OptionMenu extends JFrame {
     private JRadioButton mesh1RadioButton;
     private JRadioButton mesh2RadioButton;
     private JRadioButton mesh3RadioButton;
+    private JTextField maxCarsOnMesh;
 
     public OptionMenu() {
         super("OptionMenu");
@@ -48,10 +49,12 @@ public class OptionMenu extends JFrame {
             String carCount = carCountField.getText();
             String carSpawnInterval = carSpawnIntervalField.getText();
             String meshFile = this.chooseMeshFile();
+            String maxCarsOnMesh = this.maxCarsOnMesh.getText();
 
             SimulationParameters params = new SimulationParameters(
                 Integer.parseInt(carCount),
                 Integer.parseInt(carSpawnInterval),
+                Integer.parseInt(maxCarsOnMesh),
                 meshFile
             );
 

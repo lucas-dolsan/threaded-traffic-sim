@@ -2,6 +2,7 @@ package controller;
 
 import model.Car;
 import model.Road;
+import model.SimulationParameters;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,6 +15,8 @@ public class Simulation extends Thread {
     Queue<Car> carQueue;
     private MeshController meshController;
     private Road[][] matrix;
+    private Boolean pauseSimulation = false;
+    private Boolean endSimulation = false;
 
     private ArrayList<Car> runningCars;
 
@@ -23,11 +26,39 @@ public class Simulation extends Thread {
         this.runningCars = new ArrayList<>();
     }
 
+    public Boolean hasEnded() {
+        return this.endSimulation == true;
+    }
+
+    public void setEndSimulation(Boolean endSimulation) {
+        this.endSimulation = endSimulation;
+    }
+
+    public void setPauseSimulation(Boolean pauseSimulation) {
+        this.pauseSimulation = pauseSimulation;
+    }
+    public void addRunningCar(Car car) {
+        this.runningCars.add(car);
+    }
+
+    public void removeRunningCar(Car car) {
+        this.runningCars.remove(car);
+    }
+
+    public Queue<Car> getCarQueue() {
+        return this.carQueue;
+    }
+
     public void run() {
         this.carQueue = this.loadCars();
+
+        this.meshController.getCarsOnQueueLabel().setText("Cars on queue: " + this.carQueue.size());
+
         this.matrix = this.meshController.getMatrix();
 
         this.meshController.updateRoadMesh();
+
+        SimulationParameters params = this.meshController.getSimulationParameters();
 
         while(!carQueue.isEmpty()) {
             for (int y = 0; y < this.meshController.getLines(); y++) {
@@ -35,18 +66,30 @@ public class Simulation extends Thread {
 
                     Road startingRoad = matrix[x][y];
 
-                    if (startingRoad.isEntryCell() && startingRoad.isAvailable() && !carQueue.isEmpty()) {
+                    Boolean canAddCarsToSimulation = (
+                        startingRoad.isEntryCell() &&
+                        startingRoad.isAvailable() &&
+                        !carQueue.isEmpty() &&
+                        !this.pauseSimulation &&
+                        !this.endSimulation &&
+                        this.runningCars.size() < params.getMaxCarsOnMesh()
+                    );
 
+                    if (canAddCarsToSimulation) {
                         try {
-                            sleep(this.meshController.getSimulationParameters().getCarSpawnInterval() * 1000);
+                            sleep(params.getCarSpawnInterval() * 1000);
 
                             Car car = carQueue.remove();
+
+                            this.meshController.getCarsOnQueueLabel().setText("Cars on queue: " + this.carQueue.size());
+
                             car.defineRoute(startingRoad);
                             car.start();
 
-                            this.runningCars.add(car);
+                            car.setSimulation(this);
 
-                            System.out.println("running cars: " + runningCars.size());
+                            this.addRunningCar(car);
+                            this.meshController.getRunningCarsCountLabel().setText("Running cars: " + this.runningCars.size());
 
                         } catch (Exception e) {
                             throw new RuntimeException(e);
@@ -54,6 +97,7 @@ public class Simulation extends Thread {
                     }
                 }
             }
+            this.meshController.getRunningCarsCountLabel().setText("Running cars: " + this.runningCars.size());
         }
     }
 
