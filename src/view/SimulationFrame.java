@@ -95,10 +95,20 @@ public class SimulationFrame extends JFrame {
         this.roadMeshPanel.add(runningCarsCountLabel);
         this.roadMeshPanel.add(isPausedLabel);
 
-        this.roadMeshPanel.add(endSimulationButton);
-        this.roadMeshPanel.add(pauseSimulationButton);
-        this.roadMeshPanel.add(unpauseSimulationButton);
-        this.roadMeshPanel.add(interruptSimulationButton);
+        JFrame buttonFrame = new JFrame();
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.add(endSimulationButton);
+        buttonPanel.add(pauseSimulationButton);
+        buttonPanel.add(unpauseSimulationButton);
+        buttonPanel.add(interruptSimulationButton);
+
+        buttonFrame.setPreferredSize(new Dimension(500, 100));
+        buttonPanel.setPreferredSize(new Dimension(100, 100));
+
+        buttonFrame.add(buttonPanel);
+        buttonFrame.pack();
+        buttonFrame.setVisible(true);
 
         this.add(this.roadMeshPanel);
     }

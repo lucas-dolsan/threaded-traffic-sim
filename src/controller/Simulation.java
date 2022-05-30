@@ -10,7 +10,6 @@ import java.util.Queue;
 
 import static java.lang.Thread.sleep;
 
-
 public class Simulation extends Thread {
     Queue<Car> carQueue;
     private MeshController meshController;
@@ -43,10 +42,7 @@ public class Simulation extends Thread {
 
     public void removeRunningCar(Car car) {
         this.runningCars.remove(car);
-    }
-
-    public Queue<Car> getCarQueue() {
-        return this.carQueue;
+        this.meshController.getRunningCarsCountLabel().setText("Running cars: " + this.runningCars.size());
     }
 
     public void run() {
@@ -97,7 +93,6 @@ public class Simulation extends Thread {
                     }
                 }
             }
-            this.meshController.getRunningCarsCountLabel().setText("Running cars: " + this.runningCars.size());
         }
     }
 

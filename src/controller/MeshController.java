@@ -32,6 +32,10 @@ public class MeshController {
         return instance;
     }
 
+    public SimulationFrame getSimulationFrame() {
+        return this.simulationFrame;
+    }
+
     public Simulation getSimulation() {
         return this.simulation;
     }
