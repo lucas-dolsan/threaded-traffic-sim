@@ -1,0 +1,99 @@
+@startuml classes
+
+skinparam classAttributeIconSize 0
+
+class Thread {
+
+}
+
+class Car extends Thread {
+  - route: ArrayList<Road>
+  - matrix[][]: Road
+  - random: Random
+  - currentRoad: Road
+  - meshController: MeshController
+  - speed: Integer
+}
+
+abstract class Road {
+  # semaphore: Semaphore
+  # imagePath: String
+  # isEntryCell: Boolean
+  # isExitCell: Boolean
+  # direction: Integer
+  # car: Car
+  # x: Integer
+  # y: Integer
+}
+
+class SemaphoreRoad extends Road {
+    + isAvailable(): Boolean
+    + tryAcquire(): Boolean
+    + release(): Void
+    + addCar(car: Car): Void
+    +removeCar(): Void
+    +isCrossRoadCell(): Boolean
+}
+
+class SimulationParameters {
+  -carCount: Integer
+  -carSpawnInterval: Integer
+  -maxCarsOnMesh: Integer
+  -meshFile: File
+
+  -readMeshFile(meshFileName String): File
+}
+
+class MeshController {
+    instance: MeshController
+    simulationFrame: SimulationFrame
+    matrix[][]: Road
+    file: File
+    simulation: Simulation
+    lines: Integer
+    columns: Integer
+    simulationParameters: SimulationParameters
+    runningCarsCountLabel: JLabel
+    carsOnQueueLabel: JLabel
+
+    +createMatrixFromMeshFile(File meshFile): Void
+    +checkIfIsRoad(SemaphoreRoad cell): Boolean
+    +endSimulation(): Void
+    +runSimulation(): Void
+    +pauseSimulation(): Void
+    +unpauseSimulation(): Void
+    +defineEntriesAndExits(Road cell): Void
+    +updateRoadMesh(): Void
+}
+
+MeshController o-- SimulationFrame
+MeshController o-- Road
+MeshController o-- Simulation
+MeshController o-- SimulationParameters
+
+
+
+class Simulation extends Thread {
+  +carQueue: Queue<Car>
+  +meshController: MeshController
+  +matrix: Road[][]
+  +pauseSimulation: Boolean
+  +endSimulation: Boolean
+  +runningCars: ArrayList<Car>
+}
+
+
+class OptionMenu extends JFrame {
+}
+
+class RoadMeshItemRender extends DefaultTableCellRenderer {
+}
+
+class RoadMeshPanel extends JPanel {
+}
+
+class SimulationFrame extends JFrame {
+}
+
+class SimulationView extends JFrame {
+}

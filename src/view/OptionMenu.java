@@ -1,14 +1,11 @@
 package view;
 
 import javax.swing.*;
-
 import model.SimulationParameters;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class OptionMenu extends JFrame {
-    private JLabel carCountLabel;
     private JTextField carCountField;
     private JTextField carSpawnIntervalField;
     private JButton confirmButton;
@@ -17,6 +14,7 @@ public class OptionMenu extends JFrame {
     private JRadioButton mesh2RadioButton;
     private JRadioButton mesh3RadioButton;
     private JTextField maxCarsOnMesh;
+    private JLabel carCountLabel;
 
     public OptionMenu() {
         super("OptionMenu");

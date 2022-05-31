@@ -13,7 +13,6 @@ public class Car extends Thread {
     private Road currentRoad;
     private MeshController meshController;
     private int speed;
-    private int amountOfChoices;
 
     private Simulation simulation;
 
@@ -23,10 +22,8 @@ public class Car extends Thread {
         this.matrix = meshController.getMatrix();
 
         this.currentRoad = null;
-        this.amountOfChoices = 0;
         this.random = new Random();
         this.speed = random.nextInt(100) + 500;
-
     }
 
     public void setSimulation(Simulation simulation) {

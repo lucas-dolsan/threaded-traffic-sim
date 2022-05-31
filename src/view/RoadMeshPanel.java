@@ -1,8 +1,6 @@
 package view;
 
 import controller.MeshController;
-import model.SimulationParameters;
-
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;

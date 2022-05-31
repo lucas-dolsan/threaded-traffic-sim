@@ -3,12 +3,9 @@ package controller;
 import model.Car;
 import model.Road;
 import model.SimulationParameters;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import static java.lang.Thread.sleep;
 
 public class Simulation extends Thread {
     Queue<Car> carQueue;
@@ -16,7 +13,6 @@ public class Simulation extends Thread {
     private Road[][] matrix;
     private Boolean pauseSimulation = false;
     private Boolean endSimulation = false;
-
     private ArrayList<Car> runningCars;
 
     public Simulation(MeshController meshController) {
